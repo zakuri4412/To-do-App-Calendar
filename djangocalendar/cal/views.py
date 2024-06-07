@@ -40,3 +40,15 @@ def event(request, event_id=None):
         form.save()
         return HttpResponseRedirect(reverse('cal:calendar'))
     return render(request, 'cal/event.html', {'form': form})
+
+def event_delete(request, event_id=None):
+    event_instance = Event()
+    if event_id:
+        event_instance = get_object_or_404(Event, pk=event_id)
+    else:
+        event_instance = Event()
+
+    if request.method == 'POST':
+        event_instance.delete()
+        return HttpResponseRedirect(reverse('cal:calendar'))
+    return render(request, 'cal/event_delete_confirm.html', {'event': event_instance})
